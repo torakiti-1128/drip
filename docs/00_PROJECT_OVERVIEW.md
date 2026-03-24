@@ -8,7 +8,7 @@
 
 * **Frontend**: React (Vite) / Tailwind CSS / shadcn/ui
     * 直感的な日報プレビューとクイズ回答UI。
-* **Backend**: Ruby on Rails 7 (API Mode)
+* **Backend**: Ruby on Rails 8 (API Mode)
     * Markdownのパース、Gemini APIとの連携、スケジュール実行。
 * **Database**: PostgreSQL (Supabase Free Tier)
     * 日報履歴、生成されたクイズ、ユーザー設定の永続化。
