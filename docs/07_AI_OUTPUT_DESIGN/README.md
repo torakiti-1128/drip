@@ -1,5 +1,20 @@
 # サマリー: 2026-03-17〜2026-03-23
 
+## 0. 構造化データとの対応
+
+この Markdown は表示用フォーマットであり、保存・取得時の正は `docs/05_PROMPT_DESIGN/README.md` と `docs/03_API_DESIGN/README.md` の JSON 契約とする。各節は以下の構造化キーへ対応する。
+
+| Markdown 節 | JSON キー |
+| :--- | :--- |
+| 全体総括 | `overallSummary` / `goodPoints` / `badPoints` |
+| 改善アクション | `actionPlans[]` |
+| 定着確認クイズ | `quizzes[]` |
+| スコアリング | `scorecards[]` |
+| Drive Link | `driveLink` |
+
+- `scorecards` は 3〜5 件の評価項目を返し、各要素は `title` / `score` / `judgment` を持つ。
+- `driveLink` は AI が生成する値ではない。Markdown 保存後にアプリケーション側が URL を注入し、API レスポンスへ反映する。
+
 ## 1. 全体総括
 > 今週は設計フェーズから実装フェーズへの移行が非常にスムーズでした。特に技術選定の論理性が向上しており、手戻りの少ない開発が期待できます。一方で、後半の深夜稼働による集中力低下が懸念されます。
 
@@ -33,5 +48,23 @@
 | **学習の深さ** | 92 / 100 | 卓越 |
 | **継続性** | 70 / 100 | 標準 |
 
+対応する構造化データ例:
+
+```json
+[
+  { "title": "生産性", "score": 85, "judgment": "優良" },
+  { "title": "学習の深さ", "score": 92, "judgment": "卓越" },
+  { "title": "継続性", "score": 70, "judgment": "標準" }
+]
+```
+
 ---
 *Drive Link: [View in Google Drive](https://drive.google.com/...)*
+
+対応する構造化データ例:
+
+```json
+{
+  "driveLink": "https://drive.google.com/..."
+}
+```

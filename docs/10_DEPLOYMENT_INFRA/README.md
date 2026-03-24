@@ -20,16 +20,28 @@
                          └─── HTTPS ──→ [Google AI] (Gemini 2.0 Flash)
 ```
 
+### リポジトリ上の管理場所
+
+```text
+infrastructure/
+├── docker-compose.yml
+├── fly/fly.toml
+├── vercel/vercel.json
+├── supabase/README.md
+└── monitoring/README.md
+```
+
 ---
 
 ## 2. 環境種別
 
 | 環境 | ブランチ | 用途 |
 |------|---------|------|
-| `development` | ローカル | 開発・デバッグ |
+| `development` | ローカル / `develop` | 開発・統合確認 |
 | `test` | ローカル / CI | 自動テスト |
-| `staging` | `develop` | QA・動作確認 |
 | `production` | `main` | 本番稼働 |
+
+- 専用の `staging` 環境は持たない。`develop` は統合ブランチとして扱い、デプロイ対象は `main` のみとする。
 
 ---
 
@@ -39,21 +51,23 @@
 
 - **`.env`ファイルはGitにコミットしない**（`.gitignore`に必ず含める）。
 - `.env.example`のみをコミットし、必要な変数名とダミー値を記載する。
-- 本番・ステージング環境の秘密情報は各プラットフォームのSecret管理機能を使う。
+- `develop` / `main` に紐づく秘密情報は各プラットフォームの Secret 管理機能を使う。
 
 ### `.env.example`（プロジェクトルート）
 
 ```bash
 # Backend (Rails)
 DATABASE_URL=postgresql://postgres:password@localhost:5432/drip_development
+RAILS_ENV=development
 RAILS_MASTER_KEY=your-master-key-here
 GEMINI_API_KEY=your-gemini-api-key-here
 SUPABASE_URL=https://xxxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 FRONTEND_URL=http://localhost:5173
+SENTRY_DSN=
 
 # Frontend (React / Vite)
-VITE_API_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=http://localhost:3000/api/v1
 VITE_SUPABASE_URL=https://xxxxx.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
@@ -145,7 +159,6 @@ production:
 ```sql
 -- 全テーブルでRLSを有効化すること
 ALTER TABLE daily_reports ENABLE ROW LEVEL SECURITY;
-ALTER TABLE insights ENABLE ROW LEVEL SECURITY;
 ALTER TABLE quizzes ENABLE ROW LEVEL SECURITY;
 
 -- ユーザーは自分のデータのみアクセス可
@@ -161,23 +174,47 @@ CREATE POLICY "Users can manage own reports"
 ## 6. CI/CDパイプライン
 
 ```yaml
+# .github/workflows/ci.yml
+name: CI
+
+jobs:
+  repo-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/tests/test_create_issue.sh
+      - run: docker compose -f infrastructure/docker-compose.yml config >/dev/null
+
+  backend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bundle exec rubocop
+      - run: bundle exec rspec
+
+  frontend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm run lint
+      - run: npm run type-check
+      - run: npm run test:run
+
 # .github/workflows/deploy.yml
 name: Deploy
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
     branches: [main]
+    types: [completed]
 
 jobs:
-  deploy:
-    name: Deploy to Production
+  deploy-backend:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    needs: [backend-ci, frontend-ci]  # CIが先にグリーンであること
-
     steps:
       - uses: actions/checkout@v4
-
-      # Backend: Migrate → Deploy
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Run DB migrations
         run: flyctl ssh console -C "bin/rails db:migrate" --app drip-api
@@ -188,9 +225,19 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
-      # Frontend: Vercel（mainブランチへのpushで自動デプロイ）
-      # Vercel GitHub Integrationで設定済みのため、明示的なステップ不要
+  deploy-frontend:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: vercel deploy --prod --token "${{ secrets.VERCEL_TOKEN }}"
 ```
+
+補足:
+
+- CI は frontend/backend の実体がまだない段階でも壊れないよう、存在チェック付きで実装する
+- CD は `main` 向け CI が成功したときのみ走らせる
+- Rails のマイグレーションは deploy ステップと分離し、`fly.toml` の release command には載せない
 
 ---
 

@@ -17,19 +17,19 @@
 
 ## 1. プロジェクト概要
 
-**DRIP (Daily Report Insights Pipeline)** は、日報をAI解析し、戦略的インサイトと復習クイズを自動生成する自己成長プラットフォームである。
+**DRIP (Daily Report Insights Pipeline)** は、日報をAI解析し、改善アクションと復習クイズを自動生成する自己成長プラットフォームである。
 
 ### コアループ
 ```
 日報入力 (Input)
   → Gemini 2.0 Flash による構造化解析 (Analysis)
-  → SMART原則に基づくインサイト生成 (Insight)
+  → SMART原則に基づく改善アクション生成 (Action)
   → 定着クイズによる振り返り (Retention)
 ```
 
 ### 設計思想（変えてはならない）
 - 「日報を書く人が、翌週に明確に行動を変えている状態」がゴール。
-- UIの複雑さよりも「インサイトの質」を最優先する。
+- UIの複雑さよりも「改善アクションとクイズの実効性」を最優先する。
 - Gemini依存を局所化し、AIプロバイダー交換コストを最小にする。
 
 詳細: [`docs/00_PROJECT_OVERVIEW/README.md`](docs/00_PROJECT_OVERVIEW/README.md)
@@ -239,15 +239,10 @@ end
 
 > 詳細: [`docs/02_DATABASE_DESIGN/README.md`](docs/02_DATABASE_DESIGN/README.md)
 
-AIは以下のテーブル制約を**無条件に遵守**すること:
+AIは `docs/02_DATABASE_DESIGN/README.md` のテーブル定義を**無条件に正とする**こと。本文への制約再掲は参考情報に留め、設計・実装判断は常に設計書へ揃えること。
 
-| テーブル | カラム | 制約・型 |
-|---------|--------|---------|
-| `daily_reports` | `reflections` | `jsonb NOT NULL DEFAULT '{}'` |
-| `daily_reports` | `memos` | `jsonb NOT NULL DEFAULT '{}'` |
-| `batch_analyses` | `completed_quiz_count` | `integer NOT NULL DEFAULT 0 CHECK >= 0` |
-| `quizzes` | `status` | `enum('unstarted', 'completed') NOT NULL` |
-| `insights` | `ai_data` | `jsonb NOT NULL` + GINインデックス必須 |
+- 解析・定着系の保存対象は `batch_analyses` / `action_plans` / `quizzes` を基準とし、存在しない `insights` テーブルを前提に設計しない。
+- `daily_reports` / `batch_analyses` / `quizzes` の詳細な NULL 制約、default、列挙値は `docs/02_DATABASE_DESIGN/README.md` の最新定義を参照する。
 
 - 外部キー制約を省略するマイグレーションは **却下**。
 - `NULL` 許容カラムを追加する場合は、**設計書への記載と理由のコメント**が必須。
