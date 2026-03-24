@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { AuthUserSchema } from "../schemas/auth-session-schema";
-import { supabaseClient } from "../services/supabase-client";
+import { supabaseClient, supabaseConfigError } from "../services/supabase-client";
 import type { AuthSessionState } from "../types/auth";
 
 const initialState: AuthSessionState = {
@@ -15,10 +15,21 @@ export function useAuthSession() {
   const [state, setState] = useState<AuthSessionState>(initialState);
 
   useEffect(() => {
+    if (!supabaseClient || supabaseConfigError) {
+      setState({
+        status: "error",
+        user: null,
+        errorMessage: supabaseConfigError,
+        isSubmitting: false
+      });
+      return;
+    }
+
+    const client = supabaseClient;
     let mounted = true;
 
     async function restoreSession() {
-      const { data, error } = await supabaseClient.auth.getUser();
+      const { data, error } = await client.auth.getUser();
 
       if (!mounted) {
         return;
@@ -71,7 +82,7 @@ export function useAuthSession() {
 
     const {
       data: { subscription }
-    } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+    } = client.auth.onAuthStateChange((_event, session) => {
       if (!mounted) {
         return;
       }
@@ -104,13 +115,24 @@ export function useAuthSession() {
   }, []);
 
   async function signInWithOtp(email: string) {
+    if (!supabaseClient || supabaseConfigError) {
+      setState({
+        status: "error",
+        user: null,
+        errorMessage: supabaseConfigError,
+        isSubmitting: false
+      });
+      return false;
+    }
+
+    const client = supabaseClient;
     setState((currentState) => ({
       ...currentState,
       isSubmitting: true,
       errorMessage: null
     }));
 
-    const { error } = await supabaseClient.auth.signInWithOtp({
+    const { error } = await client.auth.signInWithOtp({
       email
     });
 
@@ -135,13 +157,24 @@ export function useAuthSession() {
   }
 
   async function signOut() {
+    if (!supabaseClient || supabaseConfigError) {
+      setState({
+        status: "error",
+        user: null,
+        errorMessage: supabaseConfigError,
+        isSubmitting: false
+      });
+      return;
+    }
+
+    const client = supabaseClient;
     setState((currentState) => ({
       ...currentState,
       isSubmitting: true,
       errorMessage: null
     }));
 
-    const { error } = await supabaseClient.auth.signOut();
+    const { error } = await client.auth.signOut();
 
     if (error) {
       setState((currentState) => ({
