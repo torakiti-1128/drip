@@ -2,8 +2,8 @@
 id: 18
 title: 通知スケジューラとリマインド機能を実装する
 slug: notification-scheduler-and-reminders
-github_issue: null
-github_url: null
+github_issue: 11
+github_url: https://github.com/torakiti-1128/drip/issues/11
 status: ready
 labels:
   - type: feature

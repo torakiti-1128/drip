@@ -2,8 +2,8 @@
 id: 8
 title: Batch Analysis起動と非同期ジョブ制御を実装する
 slug: batch-analysis-trigger-and-job-orchestration
-github_issue: null
-github_url: null
+github_issue: 20
+github_url: https://github.com/torakiti-1128/drip/issues/20
 status: ready
 labels:
   - type: feature

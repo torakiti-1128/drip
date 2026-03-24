@@ -2,8 +2,8 @@
 id: 17
 title: Markdown出力とDrive Link反映フローを実装する
 slug: markdown-export-and-drive-link-flow
-github_issue: null
-github_url: null
+github_issue: 10
+github_url: https://github.com/torakiti-1128/drip/issues/10
 status: ready
 labels:
   - type: feature

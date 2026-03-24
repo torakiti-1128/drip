@@ -2,8 +2,8 @@
 id: 20
 title: Render前提のデプロイ・監視・Secrets運用を整備する
 slug: render-deploy-observability-and-secrets
-github_issue: null
-github_url: null
+github_issue: 14
+github_url: https://github.com/torakiti-1128/drip/issues/14
 status: ready
 labels:
   - type: feature

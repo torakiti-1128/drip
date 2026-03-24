@@ -2,8 +2,8 @@
 id: 5
 title: 日報一覧と外部保存リンク導線を実装する
 slug: report-list-and-storage-link-ui
-github_issue: null
-github_url: null
+github_issue: 17
+github_url: https://github.com/torakiti-1128/drip/issues/17
 status: ready
 labels:
   - type: feature

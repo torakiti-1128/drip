@@ -2,8 +2,8 @@
 id: 13
 title: クイズ回答とアクション完了の更新APIを実装する
 slug: learning-interaction-apis
-github_issue: null
-github_url: null
+github_issue: 6
+github_url: https://github.com/torakiti-1128/drip/issues/6
 status: ready
 labels:
   - type: feature

@@ -2,8 +2,8 @@
 id: 7
 title: 設定画面とタグ管理UIを実装する
 slug: settings-and-tag-management-ui
-github_issue: null
-github_url: null
+github_issue: 19
+github_url: https://github.com/torakiti-1128/drip/issues/19
 status: ready
 labels:
   - type: feature

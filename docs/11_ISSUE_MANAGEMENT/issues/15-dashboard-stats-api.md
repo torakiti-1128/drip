@@ -2,8 +2,8 @@
 id: 15
 title: Dashboard集計APIを実装する
 slug: dashboard-stats-api
-github_issue: null
-github_url: null
+github_issue: 8
+github_url: https://github.com/torakiti-1128/drip/issues/8
 status: ready
 labels:
   - type: feature

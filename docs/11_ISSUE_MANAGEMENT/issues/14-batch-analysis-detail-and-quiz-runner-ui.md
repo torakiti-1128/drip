@@ -2,8 +2,8 @@
 id: 14
 title: 解析結果画面とQuiz Runner UIを実装する
 slug: batch-analysis-detail-and-quiz-runner-ui
-github_issue: null
-github_url: null
+github_issue: 7
+github_url: https://github.com/torakiti-1128/drip/issues/7
 status: ready
 labels:
   - type: feature

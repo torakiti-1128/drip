@@ -2,8 +2,8 @@
 id: 6
 title: タグと設定の管理APIを実装する
 slug: tags-and-settings-api
-github_issue: null
-github_url: null
+github_issue: 18
+github_url: https://github.com/torakiti-1128/drip/issues/18
 status: ready
 labels:
   - type: feature

@@ -2,8 +2,8 @@
 id: 11
 title: Batch Analysis保存モデルを実装する
 slug: batch-analysis-persistence-models
-github_issue: null
-github_url: null
+github_issue: 4
+github_url: https://github.com/torakiti-1128/drip/issues/4
 status: ready
 labels:
   - type: feature

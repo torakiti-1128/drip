@@ -2,8 +2,8 @@
 id: 12
 title: Batch Analysis詳細取得APIを実装する
 slug: batch-analysis-detail-api
-github_issue: null
-github_url: null
+github_issue: 5
+github_url: https://github.com/torakiti-1128/drip/issues/5
 status: ready
 labels:
   - type: feature

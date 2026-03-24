@@ -2,8 +2,8 @@
 id: 3
 title: 日報APIと保存serviceを実装する
 slug: daily-report-api-and-save-service
-github_issue: null
-github_url: null
+github_issue: 15
+github_url: https://github.com/torakiti-1128/drip/issues/15
 status: ready
 labels:
   - type: feature

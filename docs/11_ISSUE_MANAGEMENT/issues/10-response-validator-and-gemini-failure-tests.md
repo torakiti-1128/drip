@@ -2,8 +2,8 @@
 id: 10
 title: ResponseValidatorとGemini失敗耐性テストを整備する
 slug: response-validator-and-gemini-failure-tests
-github_issue: null
-github_url: null
+github_issue: 3
+github_url: https://github.com/torakiti-1128/drip/issues/3
 status: ready
 labels:
   - type: test

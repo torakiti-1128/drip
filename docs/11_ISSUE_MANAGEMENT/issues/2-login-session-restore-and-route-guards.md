@@ -2,8 +2,8 @@
 id: 2
 title: ログイン画面とセッション復元・保護ルートを実装する
 slug: login-session-restore-and-route-guards
-github_issue: null
-github_url: null
+github_issue: 13
+github_url: https://github.com/torakiti-1128/drip/issues/13
 status: ready
 labels:
   - type: feature

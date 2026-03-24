@@ -2,8 +2,8 @@
 id: 19
 title: PWA・オフライン同期・Push通知を実装する
 slug: pwa-offline-sync-and-push-notifications
-github_issue: null
-github_url: null
+github_issue: 12
+github_url: https://github.com/torakiti-1128/drip/issues/12
 status: ready
 labels:
   - type: feature

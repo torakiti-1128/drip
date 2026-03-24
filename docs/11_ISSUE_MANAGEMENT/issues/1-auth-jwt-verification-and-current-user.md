@@ -2,8 +2,8 @@
 id: 1
 title: Supabase JWT検証とcurrentUser解決を実装する
 slug: auth-jwt-verification-and-current-user
-github_issue: null
-github_url: null
+github_issue: 2
+github_url: https://github.com/torakiti-1128/drip/issues/2
 status: ready
 labels:
   - type: feature

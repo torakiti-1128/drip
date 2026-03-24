@@ -2,8 +2,8 @@
 id: 4
 title: 日報入力Editor UIを実装する
 slug: daily-report-editor-ui
-github_issue: null
-github_url: null
+github_issue: 16
+github_url: https://github.com/torakiti-1128/drip/issues/16
 status: ready
 labels:
   - type: feature

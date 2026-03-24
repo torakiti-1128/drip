@@ -2,8 +2,8 @@
 id: 16
 title: Dashboardと日報一覧のfrontendを実装する
 slug: dashboard-and-report-list-frontend
-github_issue: null
-github_url: null
+github_issue: 9
+github_url: https://github.com/torakiti-1128/drip/issues/9
 status: ready
 labels:
   - type: feature
