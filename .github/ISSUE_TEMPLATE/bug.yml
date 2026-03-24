@@ -1,0 +1,53 @@
+name: Bug
+description: バグ報告テンプレート
+title: "[Bug] "
+labels:
+  - type: bug
+  - needs-triage
+body:
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - critical
+        - high
+        - medium
+        - low
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - frontend
+        - backend
+        - gemini
+        - infra
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待動作
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 実際の動作
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 再現手順
+    validations:
+      required: true
+  - type: textarea
+    id: related_docs
+    attributes:
+      label: 関連設計書
+    validations:
+      required: true
