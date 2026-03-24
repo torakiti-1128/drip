@@ -49,7 +49,7 @@
 | Database | PostgreSQL (Supabase) | 16+ |
 | AI Provider | Gemini 2.0 Flash | — |
 | Hosting (FE) | Vercel | — |
-| Hosting (BE) | Fly.io | — |
+| Hosting (BE) | Render | — |
 
 ---
 

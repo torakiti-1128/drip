@@ -12,6 +12,12 @@
   - `400 Bad Request`: バリデーションエラー
   - `500 Internal Server Error`: AI解析失敗・サーバーエラー
 
+### 1.1 認証・セッションルール
+- 認証は Supabase Auth を正とし、frontend がセッション取得後に `Bearer <Supabase_JWT>` を付与して Rails API を呼び出す。
+- Rails API は未認証リクエストに `401 Unauthorized` を返す。
+- frontend はアプリ起動時にセッション復元を試み、失敗時はログイン画面へ遷移する。
+- backend 側でアプリ独自のログイン API は持たず、必要なのは JWT 検証と `currentUser` 解決のみとする。
+
 ---
 
 ## 2. 日報管理 (Intake & Manage)
@@ -60,6 +66,43 @@
       "workingMinutes": 540,
       "contentLength": 1260,
       "storageUrl": "https://drive.google.com/..."
+    }
+  ]
+}
+```
+
+---
+
+## 2.5 設定・マスタ管理
+
+### 2.5.1 設定の取得・更新
+- **Endpoint**: `GET /settings` / `PATCH /settings`
+- **Summary**: プロンプト、通知先、出力フォーマット、AI モデルなどの個人設定を管理する。
+
+```json
+{
+  "settings": {
+    "promptTemplate": "string",
+    "outputFormat": "string",
+    "storagePath": "string",
+    "webhookUrl": "https://hooks.slack.com/...",
+    "aiModel": "gemini-2.0-flash"
+  }
+}
+```
+
+### 2.5.2 タグ一覧の取得
+- **Endpoint**: `GET /tags`
+- **Summary**: 日報入力と AI 分析で利用するタグ一覧を返す。
+
+```json
+{
+  "tags": [
+    {
+      "id": "uuid-tag-1",
+      "name": "設計",
+      "category": "work",
+      "colorCode": "#3b82f6"
     }
   ]
 }

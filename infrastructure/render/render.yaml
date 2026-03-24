@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: drip-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    plan: starter
+    region: singapore
+    healthCheckPath: /up
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: PORT
+        value: 3000

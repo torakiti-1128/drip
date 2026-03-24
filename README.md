@@ -24,7 +24,7 @@ DRIP（Daily Report Insights Pipeline）は、日報を AI で解析し、行動
 | Database | PostgreSQL 16+ on Supabase |
 | Auth | Supabase Auth |
 | AI | Gemini 2.0 Flash |
-| Hosting | Vercel (frontend), Fly.io (backend) |
+| Hosting | Vercel (frontend), Render (backend) |
 | CI/CD | GitHub Actions |
 
 ## リポジトリ構成
@@ -34,7 +34,7 @@ DRIP（Daily Report Insights Pipeline）は、日報を AI で解析し、行動
 ├── backend/                     # Rails API skeleton
 ├── docs/                        # 設計書
 ├── frontend/                    # React app skeleton
-├── infrastructure/              # Fly / Vercel / Supabase / local dev templates
+├── infrastructure/              # Render / Vercel / Supabase / local dev templates
 ├── scripts/                     # 運用スクリプト
 └── .github/                     # CI/CD, Issue/PR templates
 ```

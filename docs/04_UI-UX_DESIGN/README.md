@@ -9,6 +9,13 @@
 
 ## 2. 画面遷移と主要コンポーネント
 
+### 2.0 [Auth Gate] - 認証とセッション復元
+アプリ起動時の入口。
+- **Components**:
+    - `LoginCard`: ログイン方法の選択と説明。
+    - `SessionRestorer`: 起動時に Supabase セッションを復元し、成功時は dashboard へ遷移。
+    - `AuthErrorState`: セッション失効や認証エラーを再ログインへ導く。
+
 ### 2.1 [Dashboard] - 自己成長の可視化
 ユーザーがアプリを開いて最初に目にする。
 - **Components**:
@@ -16,6 +23,13 @@
     - `NextActionCard`: 最優先の「未読改善アクション」を1件強調表示。
     - `QuizProgressDonut`: 今週のクイズ着手率と正解率をドーナツチャートで表示。
     - `WeakPointTagCloud`: 不正解が多いタグを赤色、正解が多いタグを青色でヒートマップ表示。
+
+### 2.1.1 [Report List] - 日報の履歴導線
+入力継続を支える一覧画面。
+- **Components**:
+    - `ReportListTable`: 日付、稼働時間、状態、保存リンクの一覧。
+    - `ReportStatusBadge`: `draft` / `completed` を可視化。
+    - `StorageLinkButton`: 外部保存済み Markdown への導線。
 
 ### 2.2 [Daily Report Editor] - 構造化入力
 Markdownの柔軟性と、DBの構造化を両立させるUI。
@@ -40,6 +54,14 @@ PWAの機動性を最大化するモバイル特化UI。
     2. **Flip Action**: 「解答を見る」ボタンでカードが反転。
     3. **Evaluation State**: 解答と解説を表示。「正解」「不正解」の2択ボタンを表示。
     4. **Result State**: 全問終了後、正解数と「AIからの励ましメッセージ」を表示。
+
+### 2.5 [Settings] - 個人設定と運用導線
+AI と通知の挙動を調整する画面。
+- **Components**:
+    - `PromptTemplateEditor`: プロンプトテンプレートの編集。
+    - `WebhookSettingsForm`: Slack / Google Chat 通知先の設定。
+    - `TagManager`: タグの確認と追加導線。
+    - `AccountPanel`: ログイン中アカウント表示とログアウト導線。
 
 ---
 

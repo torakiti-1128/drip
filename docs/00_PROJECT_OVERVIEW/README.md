@@ -14,8 +14,10 @@
     * 日報履歴、生成されたクイズ、ユーザー設定の永続化。
 * **AI Engine**: Gemini 2.0 Flash
     * 高速かつ広範なコンテキスト理解によるインサイト抽出。
-* **Auth**: Supabase Auth (GitHub連携等)
+* **Auth**: Supabase Auth
     * 個人専用環境としてのセキュアなアクセス制限。
+* **Deployment**: Vercel (Frontend) / Render (Backend)
+    * 低運用コストで、個人開発でも継続運用しやすい構成を採用。
 
 ## 3.  基本機能
 
