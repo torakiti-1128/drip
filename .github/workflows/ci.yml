@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  repo-health:
+    name: Repo Health
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate issue scripts
+        run: bash scripts/tests/test_create_issue.sh
+
+      - name: Validate docker compose template
+        run: docker compose -f infrastructure/docker-compose.yml config >/dev/null
+
+  backend-ci:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: drip_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d drip_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        if: ${{ hashFiles('backend/Gemfile') != '' }}
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install gems
+        if: ${{ hashFiles('backend/Gemfile') != '' }}
+        run: bundle install
+
+      - name: Run RuboCop
+        if: ${{ hashFiles('backend/Gemfile') != '' }}
+        run: bundle exec rubocop
+
+      - name: Run RSpec
+        if: ${{ hashFiles('backend/Gemfile') != '' }}
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/drip_test
+        run: bundle exec rspec
+
+      - name: Backend placeholder notice
+        if: ${{ hashFiles('backend/Gemfile') == '' }}
+        run: echo "backend/Gemfile is not present yet. Backend CI skipped."
+
+  frontend-ci:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        if: ${{ hashFiles('frontend/package.json') != '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        if: ${{ hashFiles('frontend/package.json') != '' }}
+        run: npm ci
+
+      - name: Run ESLint
+        if: ${{ hashFiles('frontend/package.json') != '' }}
+        run: npm run lint
+
+      - name: Run type check
+        if: ${{ hashFiles('frontend/package.json') != '' }}
+        run: npm run type-check
+
+      - name: Run Vitest
+        if: ${{ hashFiles('frontend/package.json') != '' }}
+        run: npm run test:run
+
+      - name: Frontend placeholder notice
+        if: ${{ hashFiles('frontend/package.json') == '' }}
+        run: echo "frontend/package.json is not present yet. Frontend CI skipped."
