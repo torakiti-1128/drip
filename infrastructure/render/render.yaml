@@ -5,9 +5,9 @@ services:
     dockerfilePath: ./backend/Dockerfile
     plan: starter
     region: singapore
-    healthCheckPath: /up
+    healthCheckPath: /graphql
     envVars:
-      - key: RAILS_ENV
-        value: production
       - key: PORT
         value: 3000
+      - key: NODE_ENV
+        value: production

@@ -15,7 +15,7 @@ drive_url: https://drive.google.com/open?id=...
 
 ## 2. 所感
 ### 今日の学び
-RailsのJSONB型を活用することで、フロントエンドとの通信効率が劇的に向上した。
+PostgreSQL の JSONB 型を活用することで、GraphQL 経由でも柔軟な入力構造を保てる。
 
 ## 3. メモ・気づき
 - 明日の朝のクイズ生成が楽しみ。
