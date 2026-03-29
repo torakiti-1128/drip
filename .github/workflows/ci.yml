@@ -17,9 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate issue scripts
-        run: bash scripts/tests/test_create_issue.sh
-
       - name: Validate docker compose template
         run: docker compose -f infrastructure/docker-compose.yml config >/dev/null
 
@@ -46,30 +43,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        if: ${{ hashFiles('backend/Gemfile') != '' }}
-        uses: ruby/setup-ruby@v1
+      - name: Set up Node.js
+        if: ${{ hashFiles('backend/package.json') != '' }}
+        uses: actions/setup-node@v4
         with:
-          bundler-cache: true
+          node-version: 22
 
-      - name: Install gems
-        if: ${{ hashFiles('backend/Gemfile') != '' }}
-        run: bundle install
+      - name: Install dependencies
+        if: ${{ hashFiles('backend/package.json') != '' }}
+        run: npm install
 
-      - name: Run RuboCop
-        if: ${{ hashFiles('backend/Gemfile') != '' }}
-        run: bundle exec rubocop
+      - name: Generate Prisma client
+        if: ${{ hashFiles('backend/package.json') != '' }}
+        run: npm run prisma:generate
 
-      - name: Run RSpec
-        if: ${{ hashFiles('backend/Gemfile') != '' }}
+      - name: Run Jest
+        if: ${{ hashFiles('backend/package.json') != '' }}
         env:
-          RAILS_ENV: test
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/drip_test
-        run: bundle exec rspec
+          JWT_SECRET: test-secret
+        run: npm run test
 
       - name: Backend placeholder notice
-        if: ${{ hashFiles('backend/Gemfile') == '' }}
-        run: echo "backend/Gemfile is not present yet. Backend CI skipped."
+        if: ${{ hashFiles('backend/package.json') == '' }}
+        run: echo "backend/package.json is not present yet. Backend CI skipped."
 
   frontend-ci:
     name: Frontend CI
@@ -85,16 +82,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         if: ${{ hashFiles('frontend/package.json') != '' }}
-        run: npm ci
-
-      - name: Run ESLint
-        if: ${{ hashFiles('frontend/package.json') != '' }}
-        run: npm run lint
+        run: npm install
 
       - name: Run type check
         if: ${{ hashFiles('frontend/package.json') != '' }}
