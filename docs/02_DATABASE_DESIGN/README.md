@@ -6,7 +6,7 @@
 | カラム名 | 型 | 制約 | 説明 |
 | :--- | :--- | :--- | :--- |
 | **id** | uuid | PK | 内部識別子 |
-| **supabase_uid** | string | Unique, NOT NULL | Supabase AuthのUID（外部キー連携用） |
+| **password_hash** | string | NOT NULL | JWTログイン用のパスワードハッシュ |
 | **email** | string | Unique, NOT NULL | ユーザーのメールアドレス |
 | **created_at** | datetime | NOT NULL | 作成日時 |
 | **updated_at** | datetime | NOT NULL | 更新日時 |
